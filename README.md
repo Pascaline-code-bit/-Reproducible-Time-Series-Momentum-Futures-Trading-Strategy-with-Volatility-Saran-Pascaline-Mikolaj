@@ -35,3 +35,7 @@ Moskowitz, Ooi, Pedersen (2012)
 - Configured Sphinx
 - Added .pre-commit-config.yaml
 - Updated .gitignore and requirements.txt
+
+### Day 4 - Reporting
+- Created the foundation for the report
+- Updated .gitignore and requirements.txt

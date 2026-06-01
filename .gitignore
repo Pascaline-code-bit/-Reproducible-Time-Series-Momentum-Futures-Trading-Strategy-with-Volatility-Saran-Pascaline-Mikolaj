@@ -19,3 +19,7 @@ docs/_build/
 .DS_Store
 Thumbs.db
 .ruff_cache/
+.quarto/
+report.html
+report_files/
+report_cache/

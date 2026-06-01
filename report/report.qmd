@@ -1,0 +1,152 @@
+---
+title: "Time-Series Momentum Strategy Backtesting & Engineering Framework"
+subtitle: "Final Project Report & Presentation Briefing"
+author: "Saran, Mikolaj"
+date: "June 1, 2026"
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 3
+    code-fold: show
+    code-tools: true
+    embed-resources: true
+doctype: article
+jupyter: python3
+---
+
+## 1. Executive Summary
+
+This report establishes a production-grade, object-oriented framework for backtesting **Time-Series Momentum (TSMOM)** trading strategies across a multi-asset portfolio. Leveraging multiple software engineering principles OOP, reproducible environments, automated linting, and self-compiling documentation.
+
+---
+
+## 2. Project Objectives & Initial Goals
+
+### 2.1 Core Objective
+To bridge the gap between theoretical quantitative finance and modern research engineering by building a fully reproducible, robust backtesting pipeline that processes historical financial data, generates trend-following signals, scales risk dynamically, and logs strategy metrics.
+
+### 2.2 Initial Technical Goals
+* **Data Reliability:** Build an automated pipeline to pull and clean historical daily close prices from Yahoo Finance.
+* **Strategy Engineering:** Implementation of trend-following momentum models over multiple business horizons.
+* **Risk Regulation:** Integrate an adaptive rolling volatility-targeting mechanism to smooth portfolio drawdowns.
+* **Operational Integrity:** Enforce modern repository practices, including automated style checkers (linting), and compiled developer documentation.
+
+---
+
+## 3. Project Status: Achievements vs. Limitations
+
+To provide context for our presentation, the table below highlights what we successfully finalized in this sprint and what remains as backlog items for future iterations.
+
+| What We Managed to Do (Achievements) | What We Didn't Manage to Do (Limitations) |
+|:---|:---|
+| **Object-Oriented Coding:** Created code in the OOP paradigm with Python classes (`DataLoader`, `MomentumSignals`, `Backtester`, `PerformanceMetrics`). | **Transaction Cost Modeling:** Execution costs (slippage, broker fees, borrow costs for short legs) are currently assumed to be zero. |
+| **Sphinx Documentation Engine:** Integrated automated code documentation directly from docstrings using the Google formatting convention. | |
+| **Pre-Commit Infrastructure:** Implemented `.pre-commit-config.yaml` using the **Ruff** linter/formatter to block dirty commits.
+
+---
+
+## 4. Methodological Framework & Code Implementation
+
+Here we showcase the production-ready code blocks utilized during the final strategy execution
+
+### 4.1 System Path Configuration & Environment Init
+
+```{python}
+import sys
+from pathlib import Path
+import matplotlib.pyplot as plt
+
+# Ensure the parent source directory is visible to the notebook kernel
+sys.path.append(str(Path().resolve().parent))
+
+# Import our custom engineering modules
+from src.data_loader import DataLoader
+from src.signals import MomentumSignals
+from src.backtest import Backtester
+from src.performance import PerformanceMetrics
+
+# Instantiate classes to manage our pipeline processes
+loader = DataLoader()
+signal_gen = MomentumSignals()
+tester = Backtester()
+metrics = PerformanceMetrics()
+```
+
+### 4.2 Data Fetching & Trend Signal Processing
+
+We pull a diversified portfolio consisting of high-beta tech equities and defensive store-of-value instruments like gold.
+
+```{python}
+# Portfolio Definition
+TICKERS = ["AAPL", "MSFT", "AMZN", "NVDA", "GLD"]
+
+# Download adjusted daily closing values
+prices = loader.download_prices(TICKERS, start_date="2015-01-01", end_date="2025-12-31")
+
+# Extract asset returns and generate lookback momentum positions
+returns = loader.compute_returns(prices)
+signals = signal_gen.compute_momentum_signal(prices, lookback=252)
+```
+
+### 4.3 Backtesting and Volatility Scaling
+
+The execution leverages historical rolling volatility to calculate adaptive scaling factors.
+
+```{python}
+# Compute volatility-scaled return matrices
+scaled_returns = tester.compute_vol_scaled_returns(returns, signals, target_vol=0.10)
+
+# Accumulate the assets into a cohesive, equally-weighted portfolio
+portfolio_returns = tester.aggregate_portfolio_returns(scaled_returns)
+cumulative_returns = tester.compute_cumulative_returns(portfolio_returns)
+```
+
+## 5. System Execution Performance & Diagnostics
+
+Below is the consolidated financial performance summary of our Time-Series Momentum framework over the designated historical testing horizon.
+
+```{python}
+# Compute historical baseline analytics
+ann_ret = metrics.annualized_return(portfolio_returns)
+ann_vol = metrics.annualized_volatility(portfolio_returns)
+sharpe  = metrics.sharpe_ratio(portfolio_returns)
+max_dd  = metrics.max_drawdown(cumulative_returns)
+
+print(f"--- Strategy Performance Metrics ---")
+print(f"Annualized Return:     {ann_ret * 100:.2f}%")
+print(f"Annualized Volatility: {ann_vol * 100:.2f}%")
+print(f"Sharpe Ratio:          {sharpe:.2f}")
+print(f"Maximum Drawdown:      {max_dd * 100:.2f}%")
+```
+
+```{python}
+#| label: fig-performance
+#| fig-cap: "Cumulative Growth Profile of Volatility-Scaled Portfolio"
+plt.figure(figsize=(10, 5))
+plt.plot(cumulative_returns, label='TSMOM Strategy Equity Curve', color='#2ca02c', lw=2)
+plt.title("System Performance: Cumulative Strategy Growth", fontsize=12, fontweight='bold')
+plt.xlabel("Date Timeline")
+plt.ylabel("Portfolio Multiplier Value")
+plt.grid(True, linestyle="--", alpha=0.5)
+plt.legend()
+plt.show()
+```
+
+## 6. Containerization & Environment Isolation
+
+### 6.1 Docker Configuration
+Placeholder: Saran to insert Dockerfile, docker-compose.yaml configurations, and .dockerignore rules here
+
+### 6.2 Image Architecture & Remote Deployment
+Placeholder: Saran to document building the image layer, tags, and execution steps for pushing to Docker Hub
+
+## 7. Cross-Platform Reproducibility & Automation
+
+### 7.1 Automation (Makefile)
+Placeholder: Saran to outline the final root-level Makefile rules and command sets
+
+### 7.2 Multi-OS Validation Logs
+Placeholder: Saran to present test results
+
+## 8. Conclusion & Presentation Talking Points
