@@ -28,3 +28,10 @@ Moskowitz, Ooi, Pedersen (2012)
 - Overlapping portfolios
 - Volatility scaling
 - Cross-asset portfolio
+
+### Day 4 - Cleaning
+- Wrapped functions in backtest, data_loader, performance, and signals into classes
+- Added docstrings to all methods for Sphinx documentation
+- Configured Sphinx
+- Added .pre-commit-config.yaml
+- Updated .gitignore and requirements.txt
