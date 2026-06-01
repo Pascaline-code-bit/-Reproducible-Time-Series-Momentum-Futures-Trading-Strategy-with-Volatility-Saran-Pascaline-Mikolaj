@@ -1,6 +1,0 @@
-services:
-  momentum-strategy:
-    build: .
-    container_name: momentum-strategy
-    working_dir: /app
-    command: python src/main.py
