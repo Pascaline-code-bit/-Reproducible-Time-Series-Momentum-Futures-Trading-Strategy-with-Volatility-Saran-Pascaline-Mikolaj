@@ -138,15 +138,193 @@ plt.show()
 ### 6.1 Docker Configuration
 Placeholder: Saran to insert Dockerfile, docker-compose.yaml configurations, and .dockerignore rules here
 
+### 6.1 Docker Configuration
+
+To ensure that the project can be reproduced on different machines and operating systems, we containerized the application using Docker. Docker allows all collaborators and external users to execute the project in the same environment regardless of their local system configuration.
+
+The main environment configuration is defined in the `Dockerfile`. The Docker image is based on Python 3.11, installs all required dependencies from `requirements.txt`, copies the project files into the container, and runs the project entry point.
+
+```dockerfile
+FROM python:3.11-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+CMD ["python", "src/main.py"]
+```
+
+A `.dockerignore` file was also included to exclude unnecessary files from the Docker image. This reduces image size and prevents temporary files, virtual environments, and cache files from being copied into the container.
+
+```text
+.git
+.gitignore
+_pycache_
+*.pyc
+.ipynb_checkpoints
+.env
+.venv
+venv
+data/raw
+outputs
+docs/_build
+```
+
+The repository additionally contains a `docker-compose.yml` file which provides a simplified method of running the project inside a container.
+
+```yaml
+services:
+  momentum-strategy:
+    build: .
+    container_name: momentum-strategy
+    working_dir: /app
+    command: python src/main.py
+```
+
+These Docker-related files ensure that the project can be executed in a controlled and isolated environment with consistent dependencies across different systems.
+
 ### 6.2 Image Architecture & Remote Deployment
 Placeholder: Saran to document building the image layer, tags, and execution steps for pushing to Docker Hub
+
+### 6.2 Image Architecture & Remote Deployment
+
+The Docker image is built from the root directory of the repository. During the build process, Docker first installs all required Python dependencies and then copies the project source code, documentation, notebooks, reports, and configuration files into the container.
+
+The image can be built locally using:
+
+```bash
+docker build -t momentum-strategy .
+```
+
+After the image has been created, the container can be executed using:
+
+```bash
+docker run --rm momentum-strategy
+```
+
+The `--rm` flag automatically removes the container after execution, helping to keep the local Docker environment clean.
+
+To support reproducibility across different machines, the image is intended to be published on DockerHub. Before publishing, the image should be tagged with the DockerHub username:
+
+```bash
+docker build -t DOCKERHUB_USERNAME/momentum-strategy:latest .
+```
+
+The image can then be uploaded using:
+
+```bash
+docker push DOCKERHUB_USERNAME/momentum-strategy:latest
+```
+
+Once uploaded, any user can download and execute the exact same environment without manually installing Python packages or configuring dependencies:
+
+```bash
+docker pull DOCKERHUB_USERNAME/momentum-strategy:latest
+docker run --rm DOCKERHUB_USERNAME/momentum-strategy:latest
+```
+
+This deployment approach ensures that the project can be reproduced consistently by collaborators, instructors, and external users. It also supports the final presentation requirement, where the project may be executed on a different computer directly from the published Docker image.
 
 ## 7. Cross-Platform Reproducibility & Automation
 
 ### 7.1 Automation (Makefile)
 Placeholder: Saran to outline the final root-level Makefile rules and command sets
 
+### 7.1 Automation (Makefile)
+
+To simplify project execution and improve reproducibility, a root-level Makefile was created. The Makefile provides a collection of standardized commands that automate common project tasks and reduce the need to remember long command sequences.
+
+The following commands are included:
+
+```make
+run:
+	python src/main.py
+
+docker-build:
+	docker build -t momentum-strategy .
+
+docker-run:
+	docker run --rm momentum-strategy
+
+docker-compose-up:
+	docker compose up
+```
+
+The project can be executed locally using:
+
+```bash
+make run
+```
+
+The Docker image can be built using:
+
+```bash
+make docker-build
+```
+
+The container can be executed using:
+
+```bash
+make docker-run
+```
+
+Docker Compose can be launched using:
+
+```bash
+make docker-compose-up
+```
+
+Using a Makefile improves usability and reproducibility because all collaborators execute the project using the same commands. It also reduces the risk of errors caused by manually typing complex Docker commands. During project evaluation, the Makefile provides a simple and standardized interface for reproducing the complete workflow.
+
 ### 7.2 Multi-OS Validation Logs
 Placeholder: Saran to present test results
+
+### 7.2 Multi-OS Validation Logs
+
+The project was designed to be reproducible across different operating systems as long as Docker is installed. The validation procedure focuses on confirming that the repository can be built and executed inside a container without requiring manual installation of Python packages.
+
+The planned reproducibility testing procedure is:
+
+1. Clone or pull the latest version of the GitHub repository.
+2. Build the Docker image from the repository root.
+3. Run the Docker container.
+4. Confirm that the project entry point executes successfully.
+5. Repeat the same procedure on another machine or operating system.
+
+The main validation commands are:
+
+```bash
+docker build -t momentum-strategy .
+docker run --rm momentum-strategy
+```
+
+Docker Compose can also be tested using:
+
+```bash
+docker compose up
+```
+
+The expected output is:
+
+```text
+Reproducible Time-Series Momentum Futures Trading Strategy
+Docker environment is working successfully.
+Project pipeline entry point executed.
+```
+
+The validation log is summarized below:
+
+| Environment | Command Tested | Status | Notes |
+|---|---|---|---|
+| Windows PowerShell with Docker Desktop | `docker build -t momentum-strategy .` | Pending final test | To be tested after final code updates |
+| Windows PowerShell with Docker Desktop | `docker run --rm momentum-strategy` | Pending final test | Confirms container execution |
+| Docker Compose | `docker compose up` | Pending final test | Confirms compose-based execution |
+| Second machine / collaborator machine | DockerHub pull and run | Pending final test | Confirms remote reproducibility |
+
+After the final code update, the Docker image will be rebuilt, tested, and pushed to DockerHub. The DockerHub image will provide the final reproducible execution environment for the project.
 
 ## 8. Conclusion & Presentation Talking Points
