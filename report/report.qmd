@@ -288,47 +288,69 @@ Asymmetric Return Drivers (Long vs. Short): Panel 2 breaks out the performance o
 
 To ensure that the project can be reproduced on different machines and operating systems, we containerized the application using Docker. Docker allows all collaborators and external users to execute the project in the same environment regardless of their local system configuration.
 
-The main environment configuration is defined in the `Dockerfile`. The Docker image is based on Python 3.11, installs all required dependencies from `requirements.txt`, copies the project files into the container, and runs the project entry point.
+The main environment configuration is defined in the `Dockerfile`. The Docker image is based on Python 3.11, installs all required dependencies from `requirements.txt` and copies the project files into the container.
 
 ```dockerfile
 FROM python:3.11-slim
 
+RUN apt-get update && apt-get install -y \
+    curl \
+    gdebi-core \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN curl -LO https://github.com/quarto-dev/quarto-cli/releases/download/v1.4.549/quarto-1.4.549-linux-amd64.deb \
+    && gdebi --non-interactive quarto-1.4.549-linux-amd64.deb \
+    && rm quarto-1.4.549-linux-amd64.deb
+
 WORKDIR /app
 
 COPY requirements.txt .
-
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+COPY src/ ./src/
+COPY report/ ./report/
+COPY tests/ ./tests/
+COPY Makefile .
 
-CMD ["python", "src/main.py"]
+CMD ["sh", "-c", "mkdir -p /app/output && quarto render report/report.qmd && cp report/report.html /app/output/report.html"]
 ```
 
 A `.dockerignore` file was also included to exclude unnecessary files from the Docker image. This reduces image size and prevents temporary files, virtual environments, and cache files from being copied into the container.
 
 ```text
 .git
+.github
 .gitignore
-_pycache_
-*.pyc
-.ipynb_checkpoints
-.env
-.venv
-venv
-data/raw
-outputs
-docs/_build
+.vscode
+.idea
+__pycache__/
+docs/_build/
+report/report.html
+report/report_files/
+report/report_cache/
+report/.quarto/
+output/
+.pytest_cache/
+.coverage
+htmlcov/
+*.quarto_ipynb
+*.quarto_ipynb_1
 ```
 
 The repository additionally contains a `docker-compose.yml` file which provides a simplified method of running the project inside a container.
 
 ```yaml
+version: '3.8'
+
 services:
   momentum-strategy:
     build: .
     container_name: momentum-strategy
     working_dir: /app
-    command: python src/main.py
+    command: >
+      sh -c "mkdir -p /app/output && quarto render report/report.qmd && cp report/report.html /app/output/report.html"
+    volumes:
+      - ./output:/app/output
 ```
 
 These Docker-related files ensure that the project can be executed in a controlled and isolated environment with consistent dependencies across different systems.
@@ -367,7 +389,7 @@ Once uploaded, any user can download and execute the exact same environment with
 
 ```bash
 docker pull teafox56a/tsmom-framework:latest
-docker run --rm teafox56a/tsmom-framework:latest
+docker run --rm -v "${PWD}/output:/app/output" teafox56a/tsmom-framework:latest
 ```
 
 This deployment approach ensures that the project can be reproduced consistently by collaborators, instructors, and external users. It also supports the final presentation requirement, where the project may be executed on a different computer directly from the published Docker image.
@@ -384,20 +406,24 @@ The following commands are included:
 run:
 	python src/main.py
 
+test:
+	python -m pytest tests/
+
+render-local:
+	quarto render report/report.qmd
+
 docker-build:
-	docker build -t momentum-strategy .
+	docker build -t teafox56a/tsmom-framework:latest .
 
 docker-run:
-	docker run --rm momentum-strategy
+	docker run --rm -v "$(CURRENT_DIR)/output:/app/output" teafox56a/tsmom-framework:latest
 
 docker-compose-up:
 	docker compose up
-```
 
-The project can be executed locally using:
+docker-push:
+	docker push teafox56a/tsmom-framework:latest
 
-```bash
-make run
 ```
 
 The Docker image can be built using:
@@ -465,6 +491,8 @@ The validation log is summarized below:
 
 
 The reproducibility test was successfully completed on Windows 11 using Docker Desktop and WSL2. The Docker image was downloaded directly from Docker Hub and executed without requiring a local Python installation. During execution, the notebook was automatically run inside the container and Quarto successfully generated the final HTML report. The generated report was exported to the local output directory, confirming that the project can be reproduced on a clean environment using only Docker.
+
+We also tested running the image from Docker Hub on a clean machine with other OS configurations, it executed successfully without any issues. This confirms that the project is fully reproducible across different machines as long as Docker is installed.
 
 ## 8. Automated Framework Testing & Quality Assurance
 
