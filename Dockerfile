@@ -16,6 +16,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY src/ ./src/
 COPY report/ ./report/
+COPY tests/ ./tests/
 COPY Makefile .
 
 CMD ["sh", "-c", "mkdir -p /app/output && quarto render report/report.qmd && cp report/report.html /app/output/report.html"]
