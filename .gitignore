@@ -28,3 +28,5 @@ output/
 .coverage
 .coverage.*
 htmlcov/
+*.quarto_ipynb
+*.quarto_ipynb_1

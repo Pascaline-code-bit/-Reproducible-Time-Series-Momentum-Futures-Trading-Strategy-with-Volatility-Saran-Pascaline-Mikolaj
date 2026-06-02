@@ -58,7 +58,7 @@ class Backtester:
         vol = returns.rolling(60).std()
 
         scaling = target_vol / vol
-        scaling = scaling.clip(lower=0.8, upper=1.2)
+        scaling = scaling.clip(lower=0.5, upper=1.5)
 
         scaled_returns = signals * scaling * returns
         return scaled_returns
