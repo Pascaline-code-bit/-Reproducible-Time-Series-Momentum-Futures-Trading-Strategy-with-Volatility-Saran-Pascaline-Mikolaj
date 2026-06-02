@@ -38,6 +38,14 @@ Performance Module
    :undoc-members:
    :show-inheritance:
 
+Testing Suite Documentation
+==========================
+
+.. automodule:: tests.test_strategy
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Indices and tables
 ==================
 * :ref:`genindex`
