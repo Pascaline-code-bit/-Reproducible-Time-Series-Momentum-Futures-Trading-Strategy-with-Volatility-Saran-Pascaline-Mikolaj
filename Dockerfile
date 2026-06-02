@@ -23,6 +23,11 @@ COPY tests/ ./tests/
 COPY docs/ ./docs/
 COPY Makefile .
 
-# Executed when the container runs:
-# 1. Runs pytest. 2. Builds Sphinx docs. 3. Prepares output folder. 4. Renders Quarto report.
-CMD ["sh", "-c", "make test && make sphinx-build && mkdir -p /app/output && quarto render report/report.qmd && cp report/report.html /app/output/report.html"]
+CMD ["sh", "-c", "\
+    make test && \
+    make sphinx-build && \
+    quarto render report/report.qmd && \
+    mkdir -p /app/output/sphinx && \
+    cp report/report.html /app/output/report.html && \
+    cp -r docs/_build/html/. /app/output/sphinx/\
+"]
