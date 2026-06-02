@@ -10,12 +10,18 @@ Moskowitz, Ooi, Pedersen (2012)
 
 ## Reproducible Execution via Docker
 
+You will need Docker (and Docker Desktop on Windows) to generate the report
+
 This project is fully containerized and hosted on Docker Hub. Running the image executes the momentum strategy backtest and auto-compiles the final HTML report without requiring a local Python installation.
 
 Open your terminal (PowerShell on Windows, Terminal on Mac/Linux) and create an empty directory:
 
 ```bash
-mkdir tsmom-evaluation && cd tsmom-evaluation
+mkdir tsmom-evaluation
+```
+
+```bash
+cd tsmom-evaluation
 ```
 
 Run the command matching your operating system. This mounts a local output/ folder to safely capture the generated report before the container automatically deletes itself upon exit.
