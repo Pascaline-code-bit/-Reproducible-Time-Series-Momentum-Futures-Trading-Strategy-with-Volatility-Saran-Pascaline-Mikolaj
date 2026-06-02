@@ -4,6 +4,12 @@ run:
 test:
 	python -m pytest tests/
 
+sphinx-build:
+	python -m sphinx.cmd.build -b html docs docs/_build/html
+
+docker-test:
+	docker run --rm teafox56a/tsmom-framework:latest python -m pytest -v tests/
+
 render-local:
 	quarto render report/report.qmd
 
