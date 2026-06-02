@@ -26,7 +26,11 @@ cd tsmom-evaluation
 
 Run the command matching your operating system. This mounts a local output/ folder to safely capture the generated report before the container automatically deletes itself upon exit.
 
-On Mac, Linux, or Git Bash, run:
+On Mac run:
+```
+docker run --platform=linux/amd64 --rm -v "$(pwd)/output:/app/output" teafox56a/tsmom-framework:latest
+```
+on Linux run:
 ```
 docker run --rm -v "$(pwd)/output:/app/output" teafox56a/tsmom-framework:latest
 ```
