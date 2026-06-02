@@ -1,5 +1,5 @@
-# Reproducible-Research-Project-Saran-Pascaline-Mikolaj
-Reproducible Research Project (Saran, Pascaline, Mikolaj)
+# Reproducible-Research-Project-Saran-Mikolaj
+Reproducible Research Project (Saran, Mikolaj)
 
 # Reproducible Time-Series Momentum Strategy
 
@@ -34,9 +34,9 @@ On Windows PowerShell, run:
 ```
 docker run --rm -v "${PWD}/output:/app/output" teafox56a/tsmom-framework:latest
 ```
-Once the console streams finish processing the portfolio data (AAPL, MSFT, AMZN, NVDA, GLD), look inside your newly created local workspace.
+Once the console streams finish processing the portfolio data, look inside your newly created local workspace.
 
-Go to the output/ directory and double-click report.html to open the interactive performance dashboard and strategy equity curves in your browser.
+Go to the output/ directory and open report.html.
 
 ## Progress Log
 
