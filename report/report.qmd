@@ -455,14 +455,16 @@ Project pipeline entry point executed.
 
 The validation log is summarized below:
 
-| Environment | Command Tested | Status | Notes |
-|---|---|---|---|
-| Windows PowerShell with Docker Desktop | `docker build -t momentum-strategy .` | Pending final test | To be tested after final code updates |
-| Windows PowerShell with Docker Desktop | `docker run --rm momentum-strategy` | Pending final test | Confirms container execution |
-| Docker Compose | `docker compose up` | Pending final test | Confirms compose-based execution |
-| Second machine / collaborator machine | DockerHub pull and run | Pending final test | Confirms remote reproducibility |
+| Environment                        | Command Tested            | Status | Notes                                                             |
+| ---------------------------------- | ------------------------- | ------ | ----------------------------------------------------------------- |
+| Windows 11 + Docker Desktop + WSL2 | DockerHub image execution | Passed | Image downloaded successfully from Docker Hub                     |
+| Windows 11 + Docker Desktop + WSL2 | Container execution       | Passed | Container started without dependency errors                       |
+| Windows 11 + Docker Desktop + WSL2 | Notebook execution        | Passed | All notebook cells executed successfully                          |
+| Windows 11 + Docker Desktop + WSL2 | Quarto report generation  | Passed | `report.html` generated automatically                             |
+| Windows 11 + Docker Desktop + WSL2 | Output export             | Passed | `report.html` successfully exported to the local output directory |
 
-After the final code update, the Docker image will be rebuilt, tested, and pushed to DockerHub. The DockerHub image will provide the final reproducible execution environment for the project.
+
+The reproducibility test was successfully completed on Windows 11 using Docker Desktop and WSL2. The Docker image was downloaded directly from Docker Hub and executed without requiring a local Python installation. During execution, the notebook was automatically run inside the container and Quarto successfully generated the final HTML report. The generated report was exported to the local output directory, confirming that the project can be reproduced on a clean environment using only Docker.
 
 ## 8. Automated Framework Testing & Quality Assurance
 
