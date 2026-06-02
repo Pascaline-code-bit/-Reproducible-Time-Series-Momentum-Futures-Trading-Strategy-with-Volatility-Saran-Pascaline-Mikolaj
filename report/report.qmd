@@ -362,18 +362,18 @@ The Docker image is built from the root directory of the repository. During the 
 The image can be built locally using:
 
 ```bash
-docker build -t momentum-strategy .
+docker pull teafox56a/tsmom-framework:latest
 ```
 
 After the image has been created, the container can be executed using:
 
 ```bash
-docker run --rm momentum-strategy
+docker run --rm -v "${PWD}/output:/app/output" teafox56a/tsmom-framework:latest
 ```
 
 The `--rm` flag automatically removes the container after execution, helping to keep the local Docker environment clean.
 
-To support reproducibility across different machines, the image is intended to be published on DockerHub. Before publishing, the image should be tagged with the DockerHub username:
+To support reproducibility across different machines, the final Docker image was published on Docker Hub under the repository teafox56a/tsmom-framework:latest.
 
 ```bash
 docker build -t teafox56a/tsmom-framework:latest .
