@@ -337,7 +337,7 @@ These Docker-related files ensure that the project can be executed in a controll
 
 The Docker image is built from the root directory of the repository. During the build process, Docker first installs all required Python dependencies and then copies the project source code, documentation, notebooks, reports, and configuration files into the container.
 
-The image can be built locally using:
+The image can be pulled locally using:
 
 ```bash
 docker pull teafox56a/tsmom-framework:latest
@@ -424,7 +424,7 @@ Using a Makefile improves usability and reproducibility because all collaborator
 
 The project was designed to be reproducible across different operating systems as long as Docker is installed. The validation procedure focuses on confirming that the repository can be built and executed inside a container without requiring manual installation of Python packages.
 
-The planned reproducibility testing procedure is:
+The reproducibility testing procedure was performed as follows:
 
 1. Clone or pull the latest version of the GitHub repository.
 2. Build the Docker image from the repository root.
