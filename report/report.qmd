@@ -1,8 +1,8 @@
 ---
-title: "Time-Series Momentum Strategy Backtesting & Engineering Framework"
-subtitle: "Final Project Report & Presentation Briefing"
+title: "Time-Series Momentum Strategy"
+subtitle: "Final Project Report"
 author: "Saran, Mikolaj"
-date: "June 1, 2026"
+date: "June 2, 2026"
 format:
   html:
     theme: cosmo
@@ -136,9 +136,6 @@ plt.show()
 ## 6. Containerization & Environment Isolation
 
 ### 6.1 Docker Configuration
-Placeholder: Saran to insert Dockerfile, docker-compose.yaml configurations, and .dockerignore rules here
-
-### 6.1 Docker Configuration
 
 To ensure that the project can be reproduced on different machines and operating systems, we containerized the application using Docker. Docker allows all collaborators and external users to execute the project in the same environment regardless of their local system configuration.
 
@@ -188,9 +185,6 @@ services:
 These Docker-related files ensure that the project can be executed in a controlled and isolated environment with consistent dependencies across different systems.
 
 ### 6.2 Image Architecture & Remote Deployment
-Placeholder: Saran to document building the image layer, tags, and execution steps for pushing to Docker Hub
-
-### 6.2 Image Architecture & Remote Deployment
 
 The Docker image is built from the root directory of the repository. During the build process, Docker first installs all required Python dependencies and then copies the project source code, documentation, notebooks, reports, and configuration files into the container.
 
@@ -230,9 +224,6 @@ docker run --rm DOCKERHUB_USERNAME/momentum-strategy:latest
 This deployment approach ensures that the project can be reproduced consistently by collaborators, instructors, and external users. It also supports the final presentation requirement, where the project may be executed on a different computer directly from the published Docker image.
 
 ## 7. Cross-Platform Reproducibility & Automation
-
-### 7.1 Automation (Makefile)
-Placeholder: Saran to outline the final root-level Makefile rules and command sets
 
 ### 7.1 Automation (Makefile)
 
@@ -279,9 +270,6 @@ make docker-compose-up
 ```
 
 Using a Makefile improves usability and reproducibility because all collaborators execute the project using the same commands. It also reduces the risk of errors caused by manually typing complex Docker commands. During project evaluation, the Makefile provides a simple and standardized interface for reproducing the complete workflow.
-
-### 7.2 Multi-OS Validation Logs
-Placeholder: Saran to present test results
 
 ### 7.2 Multi-OS Validation Logs
 

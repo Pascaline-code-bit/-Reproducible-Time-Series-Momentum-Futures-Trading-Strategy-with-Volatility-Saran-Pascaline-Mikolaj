@@ -1,6 +1,11 @@
+version: '3.8'
+
 services:
   momentum-strategy:
     build: .
     container_name: momentum-strategy
     working_dir: /app
-    command: python src/main.py
+    command: >
+      sh -c "mkdir -p /app/output && quarto render report/report.qmd && cp report/report.html /app/output/report.html"
+    volumes:
+      - ./output:/app/output
