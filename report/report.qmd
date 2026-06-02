@@ -354,20 +354,20 @@ The `--rm` flag automatically removes the container after execution, helping to 
 To support reproducibility across different machines, the image is intended to be published on DockerHub. Before publishing, the image should be tagged with the DockerHub username:
 
 ```bash
-docker build -t DOCKERHUB_USERNAME/momentum-strategy:latest .
+docker build -t teafox56a/tsmom-framework:latest .
 ```
 
 The image can then be uploaded using:
 
 ```bash
-docker push DOCKERHUB_USERNAME/momentum-strategy:latest
+docker push teafox56a/tsmom-framework:latest
 ```
 
 Once uploaded, any user can download and execute the exact same environment without manually installing Python packages or configuring dependencies:
 
 ```bash
-docker pull DOCKERHUB_USERNAME/momentum-strategy:latest
-docker run --rm DOCKERHUB_USERNAME/momentum-strategy:latest
+docker pull teafox56a/tsmom-framework:latest
+docker run --rm teafox56a/tsmom-framework:latest
 ```
 
 This deployment approach ensures that the project can be reproduced consistently by collaborators, instructors, and external users. It also supports the final presentation requirement, where the project may be executed on a different computer directly from the published Docker image.
