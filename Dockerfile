@@ -3,6 +3,7 @@ FROM python:3.11-slim
 RUN apt-get update && apt-get install -y \
     curl \
     gdebi-core \
+    make \
     && rm -rf /var/lib/apt/lists/*
 
 RUN ARCH=$(dpkg --print-architecture) \
@@ -22,4 +23,6 @@ COPY tests/ ./tests/
 COPY docs/ ./docs/
 COPY Makefile .
 
-CMD ["sh", "-c", "mkdir -p /app/output && quarto render report/report.qmd && cp report/report.html /app/output/report.html"]
+# Executed when the container runs:
+# 1. Runs pytest. 2. Builds Sphinx docs. 3. Prepares output folder. 4. Renders Quarto report.
+CMD ["sh", "-c", "make test && make sphinx-build && mkdir -p /app/output && quarto render report/report.qmd && cp report/report.html /app/output/report.html"]
