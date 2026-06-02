@@ -23,3 +23,8 @@ Thumbs.db
 report.html
 report_files/
 report_cache/
+output/
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/

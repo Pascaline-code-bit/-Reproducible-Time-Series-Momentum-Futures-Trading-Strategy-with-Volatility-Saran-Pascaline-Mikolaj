@@ -8,3 +8,5 @@ sphinx-rtd-theme
 pre-commit
 ruff
 quarto
+pytest
+pytest-cov

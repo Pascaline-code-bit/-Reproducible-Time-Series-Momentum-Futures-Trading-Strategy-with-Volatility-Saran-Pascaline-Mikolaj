@@ -8,6 +8,30 @@ This project reproduces and extends the methodology from:
 Moskowitz, Ooi, Pedersen (2012)
 "Time Series Momentum"
 
+## Reproducible Execution via Docker
+
+This project is fully containerized and hosted on Docker Hub. Running the image executes the momentum strategy backtest and auto-compiles the final HTML report without requiring a local Python installation.
+
+Open your terminal (PowerShell on Windows, Terminal on Mac/Linux) and create an empty directory:
+
+```bash
+mkdir tsmom-evaluation && cd tsmom-evaluation
+```
+
+Run the command matching your operating system. This mounts a local output/ folder to safely capture the generated report before the container automatically deletes itself upon exit.
+
+On Mac, Linux, or Git Bash, run:
+```
+docker run --rm -v "$(pwd)/output:/app/output" teafox56a/tsmom-framework:latest
+```
+On Windows PowerShell, run:
+```
+docker run --rm -v "${PWD}/output:/app/output" teafox56a/tsmom-framework:latest
+```
+Once the console streams finish processing the portfolio data (AAPL, MSFT, AMZN, NVDA, GLD), look inside your newly created local workspace.
+
+Go to the output/ directory and double-click report.html to open the interactive performance dashboard and strategy equity curves in your browser.
+
 ## Progress Log
 
 ### Day 1
@@ -39,3 +63,9 @@ Moskowitz, Ooi, Pedersen (2012)
 ### Day 4 - Reporting
 - Created the foundation for the report
 - Updated .gitignore and requirements.txt
+
+### Day 5
+- Implement pytest suite to validate data loading, signals, and backtesting
+- Configure .gitignore and .dockerignore to exclude testing artifacts
+- Create README documentation for running the public Docker image
+- Add pytest dependencies to requirements.txt
