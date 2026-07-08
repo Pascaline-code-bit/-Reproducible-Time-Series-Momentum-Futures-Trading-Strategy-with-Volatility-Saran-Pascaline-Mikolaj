@@ -28,7 +28,7 @@ Run the command matching your operating system. This mounts a local output/ fold
 
 On Mac run:
 ```
-docker run --platform=linux/amd64 --rm -v "$(pwd)/output:/app/output" teafox56a/tsmom-framework:latest
+docker run --rm -v "$(pwd)/output:/app/output" teafox56a/tsmom-framework:latest
 ```
 on Linux run:
 ```
